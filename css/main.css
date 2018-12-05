@@ -1657,14 +1657,14 @@ pre .javascript .function {
 #rewardButton span {
   display: inline-block;
   width: 80px;
-  height: 35px;
+  height: 30px;
   border-radius: 5px;
   color: #fff;
   font-weight: 400;
   font-style: normal;
   font-variant: normal;
   font-stretch: normal;
-  font-size: 18px;
+  font-size: 15px;
   font-family: "Microsoft Yahei";
   background: #f44336;
 }
@@ -1943,7 +1943,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #ff289e;
+  background: #b321ba;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -2492,6 +2492,14 @@ pre .javascript .function {
 .site-uv::after {
   content: "|";
   padding-left: 10px;
+}
+.gt-header a,
+.gt-comments a,
+.gt-popup a {
+  border-bottom: none;
+}
+.gt-container .gt-popup .gt-action.is--active:before {
+  top: 0.7em;
 }
 .page-archive .archive-page-counter {
   position: relative;
