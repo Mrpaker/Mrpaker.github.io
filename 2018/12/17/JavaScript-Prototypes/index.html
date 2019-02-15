@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="在这篇博文中，我将讲解关于在ECMAScrpit 5.1 中定义的语法来讨论JavaScrpit中的对象。 一个全新的对象在JavaScrpit中，对象就是是一组键值对（在Ruby中，这种结构叫做哈希；在Python中，被称作字典）。举个例子，如果我想描述我的名字，我会创建一个有两个键的对象：firstName将会指向”Yehuda”，lastName将指向”Katz”。JavaScrpit对象中">
+<meta name="description" content="分享，记录，感悟">
 <meta name="keywords" content="js">
 <meta property="og:type" content="article">
-<meta property="og:title" content="JavaScript-Prototypes">
+<meta property="og:title" content="JavaScript中原型和原型链">
 <meta property="og:url" content="http://yoursite.com/2018/12/17/JavaScript-Prototypes/index.html">
 <meta property="og:site_name" content="XXL的博客">
-<meta property="og:description" content="在这篇博文中，我将讲解关于在ECMAScrpit 5.1 中定义的语法来讨论JavaScrpit中的对象。 一个全新的对象在JavaScrpit中，对象就是是一组键值对（在Ruby中，这种结构叫做哈希；在Python中，被称作字典）。举个例子，如果我想描述我的名字，我会创建一个有两个键的对象：firstName将会指向”Yehuda”，lastName将指向”Katz”。JavaScrpit对象中">
+<meta property="og:description" content="分享，记录，感悟">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-12-18T13:58:46.731Z">
+<meta property="og:updated_time" content="2019-02-15T12:35:16.434Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="JavaScript-Prototypes">
-<meta name="twitter:description" content="在这篇博文中，我将讲解关于在ECMAScrpit 5.1 中定义的语法来讨论JavaScrpit中的对象。 一个全新的对象在JavaScrpit中，对象就是是一组键值对（在Ruby中，这种结构叫做哈希；在Python中，被称作字典）。举个例子，如果我想描述我的名字，我会创建一个有两个键的对象：firstName将会指向”Yehuda”，lastName将指向”Katz”。JavaScrpit对象中">
+<meta name="twitter:title" content="JavaScript中原型和原型链">
+<meta name="twitter:description" content="分享，记录，感悟">
 
 
 
@@ -126,7 +126,7 @@
 
 
 
-  <title>JavaScript-Prototypes | XXL的博客</title>
+  <title>JavaScript中原型和原型链 | XXL的博客</title>
   
 
 
@@ -270,7 +270,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">JavaScript-Prototypes</h1>
+          <h1 class="post-title" itemprop="name headline">JavaScript中原型和原型链</h1>
         
 
         <div class="post-meta">
@@ -320,39 +320,7 @@
       
 
       
-        <p>在这篇博文中，我将讲解关于在ECMAScrpit 5.1 中定义的语法来讨论JavaScrpit中的对象。</p>
-<h3 id="一个全新的对象"><a href="#一个全新的对象" class="headerlink" title="一个全新的对象"></a>一个全新的对象</h3><p>在JavaScrpit中，对象就是是一组键值对（在Ruby中，这种结构叫做哈希；在Python中，被称作字典）。举个例子，如果我想描述我的名字，我会创建一个有两个键的对象：<code>firstName</code>将会指向”Yehuda”，<code>lastName</code>将指向”Katz”。JavaScrpit对象中键是字符串类型（不能为变量）。</p>
-<p>你可以使用<code>Object.create</code>来创建JavaScript中最简单的对象：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> person = <span class="built_in">Object</span>.create(<span class="literal">null</span>);	<span class="comment">// 创建了一个空对象</span></span><br></pre></td></tr></table></figure>
-<p>但是为什么我们不直接用<code>var person = {};</code>来创建呢？如果需要按照键在对象中找值，那么请使用括号来创建对象。如果对象中没有值，JavaScrpit将返回undefined。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">person[<span class="string">'name'</span>]	<span class="comment">// undefined</span></span><br></pre></td></tr></table></figure>
-<p>如果键是有效的标识符[1]，那么可以这样来使用：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">person.name	<span class="comment">// undefined</span></span><br></pre></td></tr></table></figure>
-<p>[1] <em>通常，标识符以unicode字母，$， _ ，开头，后面跟着任何的的字母或者数字</em></p>
-<h3 id="新增值"><a href="#新增值" class="headerlink" title="新增值"></a>新增值</h3><p>现在你拥有了一个空的对象。但是一个空对象是完全没用的。在我们增加一些属性之前，我们需要理解在JavaScrpit中什么是属性。</p>
-<p>属性有一个名字和一个值。此外，属性可以是<strong>可枚举的(enumerable)</strong>，<strong>可配置(configurable)</strong>的和<strong>可写的(writable)</strong>。</p>
-<p>如果值是可枚举的，那么当对象使用<code>for (prop in obj)</code>循环枚举时，这个属性就会被枚举出来；</p>
-<p>如果属性是可写的，那么你可以使用别的值代替它；</p>
-<p>如果属性是可配置的，你可以删除或者改变他的其他属性（enumerable, configurable, writable）。</p>
-<p>通常，当我们创建一个属性，我们会希望他是<strong>可枚举的(enumerable)</strong>，<strong>可配置(configurable)</strong>的和<strong>可写的(writable)</strong>。that was the only kind of property a user could create directly.</p>
-<p>我们可使用<code>Object.defineProperty</code>来给一个对象新增一个属性。让我们来给我们的空对象新增 fisrt name 和 last name属性：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> person = <span class="built_in">Object</span>.create(<span class="literal">null</span>);</span><br><span class="line"><span class="built_in">Object</span>.defineProperty(person, <span class="string">'firstName'</span>, &#123;</span><br><span class="line">    value: <span class="string">"Yehuda"</span>,</span><br><span class="line">    writable: <span class="literal">true</span>,</span><br><span class="line">    enumerable: <span class="literal">true</span>,</span><br><span class="line">    configurable: <span class="literal">true</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="built_in">Object</span>.defineProperty(person, <span class="string">'lastName'</span>, &#123;</span><br><span class="line">    value: <span class="string">"Katz"</span>,</span><br><span class="line">    writable: <span class="literal">true</span>,</span><br><span class="line">    enumerable: <span class="literal">true</span>,</span><br><span class="line">    configurable: <span class="literal">true</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p>显然，我们这样定义属性的话，实在是太烦了。我们可以通过默认的配置来让他更加简洁一些：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> config = &#123;</span><br><span class="line">    writable: <span class="literal">true</span>,</span><br><span class="line">    enumerable: <span class="literal">true</span>,</span><br><span class="line">    configurable: <span class="literal">true</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> defineProperty = <span class="function"><span class="keyword">function</span>(<span class="params">obj, name, value</span>) </span>&#123;</span><br><span class="line">    config.value = value;</span><br><span class="line">    <span class="built_in">Object</span>.defineProperty(obj, name, value);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> persion = <span class="built_in">Object</span>.create(<span class="literal">null</span>);</span><br><span class="line">defineProperty(person, <span class="string">'firstName'</span>, <span class="string">'Yehuda'</span>);</span><br><span class="line">defineProperty(person, <span class="string">'lastName'</span>, <span class="string">'Katz'</span>);</span><br></pre></td></tr></table></figure>
-<p>尽管如此，创建一个如此简单的属性列表还是非常的难看，在我们找到更加好的解决方案之前，我们需要为我们的JavaScript对象库中添加一种武器。</p>
-<h3 id="原型"><a href="#原型" class="headerlink" title="原型"></a>原型</h3><p>到目前为止，我们已经介绍了对象就是简单的键值对。事实上，JavaScript对象还有一个额外的属性：一个指向其他对象的指针。我们管这个指针叫做对象的原型。如果你尝试去查找一个对象的key，但是没有找到，JavaScript将会在他的原型中查找。它会遵循”原型链”，直到它找到一个<code>null</code>的值。事实上，它会返回<code>undefined</code>。</p>
-<p>你还记得我们通过<code>Object.create(null)</code>来创建一个新对象吗？这个方法传的参数，告诉了JavaScript，应该设置什么值给对象的原型。你可以查找一个对象的原型通过<code>Object.getPrototypeOf</code>:</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> man = <span class="built_in">Object</span>.create(<span class="literal">null</span>);</span><br><span class="line">defineProperty(man, <span class="string">'sex'</span>, <span class="string">'male'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> yehuda = <span class="built_in">Object</span>.create(man);</span><br><span class="line">defineProperty(yehuda, <span class="string">'firstName'</span>, <span class="string">'Yehuda'</span>);</span><br><span class="line">defineProperty(yahuda, <span class="string">'lastName'</span>, <span class="string">'Katz'</span>);</span><br><span class="line"></span><br><span class="line">yehuda.sex	<span class="comment">// 'male'</span></span><br><span class="line">yehuda.firstName	<span class="comment">// 'Yehuda'</span></span><br><span class="line">yehuda.lastName		<span class="comment">// 'Katz'</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">Object</span>.getPrototypeOf(yehuda)	<span class="comment">// 返回man对象</span></span><br></pre></td></tr></table></figure>
-<p>我们也可以加上函数：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> person = <span class="built_in">Object</span>.create(<span class="literal">null</span>);</span><br><span class="line">defineProperty(person, <span class="string">'fullName'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  	<span class="keyword">return</span> <span class="keyword">this</span>.firstName + <span class="string">' '</span> + <span class="keyword">this</span>.lastName;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> man = <span class="built_in">Object</span>.create(person);</span><br><span class="line">defineProperty(man, <span class="string">'sex'</span>, <span class="string">'male'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> yehuda = <span class="built_in">Object</span>.create(man);</span><br><span class="line">defineProperty(yehuda, <span class="string">'firstName'</span>, <span class="string">'Yehuda'</span>);</span><br><span class="line">defineProperty(yehuda, <span class="string">'lastName'</span>, <span class="string">'Katz'</span>);</span><br><span class="line"></span><br><span class="line">yehuda.sex        <span class="comment">// 'male'</span></span><br><span class="line">yehuda.fullName() <span class="comment">// 'Yehuda Katz'</span></span><br></pre></td></tr></table></figure>
-<h3 id="设置原型"><a href="#设置原型" class="headerlink" title="设置原型"></a>设置原型</h3><p>创建一个可写的，可配置的，可枚举的属性非常常见，因此JavaScript可以使用复制语法轻松的完成这件事情，让我们用复制而不是defineProperty更新上一个示例：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> person = <span class="built_in">Object</span>.create(<span class="literal">null</span>);</span><br><span class="line">person[<span class="string">'fullName'</span>] =  <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  	<span class="keyword">return</span> <span class="keyword">this</span>.firstName + <span class="string">' '</span> + <span class="keyword">this</span>.lastName;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">defineProperty(man, <span class="string">'sex'</span>, <span class="string">"male"</span>);</span><br><span class="line">man[<span class="string">'sex'</span>] = <span class="string">'male'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> yehuda = <span class="built_in">Object</span>.create(man);</span><br><span class="line">yahuda[<span class="string">'firstName'</span>] = <span class="string">'Yehuda'</span>;</span><br><span class="line">yahuda[<span class="string">'lastName'</span>] = <span class="string">'Katz'</span>;</span><br><span class="line"></span><br><span class="line">yehuda.sex        <span class="comment">// 'male'</span></span><br><span class="line">yehuda.fullName() <span class="comment">// 'Yehuda Katz'</span></span><br></pre></td></tr></table></figure>
-<p>就像查找属性一样，如果你定义的属性是标识符，就可以用点语法而不是括号语法。例如，你可以在上面的示例中使用<code>man.sex = &#39;male&#39;</code>。</p>
-<h3 id="Object-Literals"><a href="#Object-Literals" class="headerlink" title="Object   Literals"></a>Object   Literals</h3><p>不过，每次设置一个属性，显得非常的烦。JavaScript提供了一种文字语法，用于创建对象，并且一次性赋值多个属性。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> person = &#123; <span class="attr">firstName</span>: <span class="string">"Paul"</span>, <span class="attr">lastName</span>: <span class="string">"Irish"</span> &#125;</span><br></pre></td></tr></table></figure>
-<p>以上是下面的语法糖：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> person = <span class="built_in">Object</span>.create(<span class="built_in">Object</span>.protototype)</span><br><span class="line">person.firstName = <span class="string">'Paul'</span>;</span><br><span class="line">person.lastName = <span class="string">'Irish'</span>;</span><br></pre></td></tr></table></figure>
-
+        
       
     </div>
     
@@ -442,17 +410,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -512,22 +471,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一个全新的对象"><span class="nav-number">1.</span> <span class="nav-text">一个全新的对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#新增值"><span class="nav-number">2.</span> <span class="nav-text">新增值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#原型"><span class="nav-number">3.</span> <span class="nav-text">原型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置原型"><span class="nav-number">4.</span> <span class="nav-text">设置原型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Object-Literals"><span class="nav-number">5.</span> <span class="nav-text">Object   Literals</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
