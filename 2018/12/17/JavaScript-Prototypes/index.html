@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="分享，记录，感悟">
+<meta name="description" content="《JavaScript高程》笔记 如果对js中创建对象的方式已经非常熟悉了，那可以直接看下一篇了 Javascript中说到原型，那肯定离不开对象，那我们就先来看看js中有多少种创建对象的方式。 Javascript 创建一个对象有很多种方法，Object构造函数或对象字面量都可以用来创造对象，但是这些方法都有明显的缺点：使用相同的一个借口创造很多对象，会产生大量的重复代码；为了解决这个问题，产生">
 <meta name="keywords" content="js">
 <meta property="og:type" content="article">
-<meta property="og:title" content="JavaScript中原型和原型链">
+<meta property="og:title" content="JavaScript创建对象的几种方式">
 <meta property="og:url" content="http://yoursite.com/2018/12/17/JavaScript-Prototypes/index.html">
 <meta property="og:site_name" content="XXL的博客">
-<meta property="og:description" content="分享，记录，感悟">
+<meta property="og:description" content="《JavaScript高程》笔记 如果对js中创建对象的方式已经非常熟悉了，那可以直接看下一篇了 Javascript中说到原型，那肯定离不开对象，那我们就先来看看js中有多少种创建对象的方式。 Javascript 创建一个对象有很多种方法，Object构造函数或对象字面量都可以用来创造对象，但是这些方法都有明显的缺点：使用相同的一个借口创造很多对象，会产生大量的重复代码；为了解决这个问题，产生">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-02-15T12:35:16.434Z">
+<meta property="og:updated_time" content="2019-02-16T05:36:47.698Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="JavaScript中原型和原型链">
-<meta name="twitter:description" content="分享，记录，感悟">
+<meta name="twitter:title" content="JavaScript创建对象的几种方式">
+<meta name="twitter:description" content="《JavaScript高程》笔记 如果对js中创建对象的方式已经非常熟悉了，那可以直接看下一篇了 Javascript中说到原型，那肯定离不开对象，那我们就先来看看js中有多少种创建对象的方式。 Javascript 创建一个对象有很多种方法，Object构造函数或对象字面量都可以用来创造对象，但是这些方法都有明显的缺点：使用相同的一个借口创造很多对象，会产生大量的重复代码；为了解决这个问题，产生">
 
 
 
@@ -126,7 +126,7 @@
 
 
 
-  <title>JavaScript中原型和原型链 | XXL的博客</title>
+  <title>JavaScript创建对象的几种方式 | XXL的博客</title>
   
 
 
@@ -270,7 +270,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">JavaScript中原型和原型链</h1>
+          <h1 class="post-title" itemprop="name headline">JavaScript创建对象的几种方式</h1>
         
 
         <div class="post-meta">
@@ -320,7 +320,42 @@
       
 
       
-        
+        <p><em>《JavaScript高程》笔记</em></p>
+<p>如果对js中创建对象的方式已经非常熟悉了，那可以直接看下一篇了</p>
+<p>Javascript中说到原型，那肯定离不开对象，那我们就先来看看js中有多少种创建对象的方式。</p>
+<p>Javascript 创建一个对象有很多种方法，Object构造函数或对象字面量都可以用来创造对象，但是这些方法都有明显的缺点：使用相同的一个借口创造很多对象，会产生大量的重复代码；为了解决这个问题，产生了一些新的方式：</p>
+<p>####1、工厂模式</p>
+<p>工厂模式是软件工程中很普遍的一种设计模式，这种方法抽象了创建对象的过程，如下面的例子</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createPerson</span>(<span class="params">name, age, job</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> o = <span class="keyword">new</span> <span class="built_in">Object</span>();</span><br><span class="line">    o.name = name;</span><br><span class="line">    o.age = age;</span><br><span class="line">    o.job = job;</span><br><span class="line">    o.sayName = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        alert(<span class="keyword">this</span>.name)</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">return</span> o;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> person1 = createPerson(<span class="string">"A"</span>, <span class="number">29</span>, <span class="string">"Software Engineer"</span>);</span><br><span class="line"><span class="keyword">var</span> person2 = createPerson(<span class="string">"B"</span>, <span class="number">27</span>, <span class="string">"Doctor"</span>);</span><br></pre></td></tr></table></figure>
+<p>这种方式将函数当做工厂，而将需要创建的对象当做商品，在工厂中组装好零部件之后，就返回出来了。</p>
+<p>工厂模式虽然解决了创建多个相似对象的问题，但是不能解决<strong>对象识别</strong>的问题（如何知道对象是一个Person类型的对象，而不是单纯的Object类型），而下面讲得函数构造模式就是解决这个问题的办法。</p>
+<h4 id="2、构造函数模式"><a href="#2、构造函数模式" class="headerlink" title="2、构造函数模式"></a>2、构造函数模式</h4><p>类似于Object和Array这样的原生构造函数，我们也可以创建自定义的构造函数，从而定义自定义对象类型的属性和方法。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name, age, job</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name = name;</span><br><span class="line">    <span class="keyword">this</span>.age = age;</span><br><span class="line">    <span class="keyword">this</span>.job = job;</span><br><span class="line">    <span class="keyword">this</span>.sayName = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">		alert(<span class="keyword">this</span>.name);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> person1 = <span class="keyword">new</span> Person(<span class="string">"A"</span>, <span class="number">29</span>, <span class="string">"Software Engineer"</span>);</span><br><span class="line"><span class="keyword">var</span> person2 = <span class="keyword">new</span> Person(<span class="string">"B"</span>, <span class="number">27</span>, <span class="string">"Doctor"</span>);</span><br></pre></td></tr></table></figure>
+<p>与工厂模式对比：</p>
+<p>1、没有显示地创建对象；</p>
+<p>2、直接将属性和方法赋值给了this对象；</p>
+<p>3、没有return语句；</p>
+<p>要创[建Person的新实例，必须使用new操作符。以这种方法调用构造函数实际上会经历一下4个步骤：</p>
+<p>（1）创建一个新对象；</p>
+<p>（2）将构造函数的作用域赋给新的对象（因此this就指向了这个新对象）；</p>
+<p>（3）执行构造函数中的代码（为这个新对象添加属性）；</p>
+<p>（4）返回新对象；</p>
+<p>通过构造函数创建的实例，都会有一个constructor(构造函数)属性，该属性指向Person。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">alert(person1.constructor === Person);	<span class="comment">// true</span></span><br><span class="line">alert(person2.constructor === Person);	<span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<p>对象的constructor属性最初是用来标识对象对象类型的。但是，提到检测对象类型，还是instanceof操作符要更靠谱一下，书中我没有找到答案，但是constructor是对象的一个属性，那我们是不是能够改变这个属性的值呢，没错，当实例的constructor属性被人为修改之后，那就可能是不准确的了，所以我们使用instanceof会更加靠谱一点。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">alert(person1 <span class="keyword">instanceof</span> <span class="built_in">Object</span>);	<span class="comment">// true</span></span><br><span class="line">alert(person1 <span class="keyword">instanceof</span> Person);	<span class="comment">// true</span></span><br><span class="line">alert(person2 <span class="keyword">instanceof</span> <span class="built_in">Object</span>);	<span class="comment">// true</span></span><br><span class="line">alert(person2 <span class="keyword">instanceof</span> Person);	<span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<p>创建自定义的构造函数意味着可以将它的实例标识为一种特定的类型；而这正是构造函数胜过工厂模式的地方。这个例子中person1和person2之所以同事是Object的实例，是因为所有对象均继承自Object。</p>
+<p>构造函数的问题：</p>
+<p>构造函数的主要问题，就是每个方法都要在每个实例上重新创建一遍。在前面的例子中有一个sayName（）的方法。而person1中和person2中的sayName() 其实是不同的Function的实例。</p>
+<p>而创建多个完成同样任务的Function实例确实是没有必要的，这样会造成资源的极大浪费。因此，可以把函数转移到构造函数外部来解决这个问题。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name, age, job</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name = name;</span><br><span class="line">    <span class="keyword">this</span>.age = age;</span><br><span class="line">    <span class="keyword">this</span>.job = job;</span><br><span class="line">    <span class="keyword">this</span>.sayName = sayName;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sayName</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">		alert(<span class="keyword">this</span>.name);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在这个例子中，我们把sayName()转移到了构造函数外部，这样一来实例就能共享同一个sayName() 函数了，但是问题又来了，此时的sayName() 在全局作用域中，而它实际上只能被某个对象调用，这样造成了对全局环境的污染，并且看起来丝毫没有封装性可言了，那么接下来出现的原型模式就可以轻松的解决这个问题。</p>
+<h4 id="3、原型模式"><a href="#3、原型模式" class="headerlink" title="3、原型模式"></a>3、原型模式</h4><p>我们创建的<strong>每个函数都有一个prototype(原型)属性</strong>，这个属性是一个_指针_，指向一个对象，而这个对象的用途是包含可以有特定类型的所有实例共享的属性和方法。使用原型对象的好处是可以让所有实例共享它所包含的属性和方法。如下面例子所示。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">Person.prototype.name = <span class="string">"A"</span>;</span><br><span class="line">Person.prototype.age = <span class="number">29</span>;</span><br><span class="line">Person.prototype.job = <span class="string">"Software Engineer"</span>;</span><br><span class="line">Person.prototype.sayName = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    alert(<span class="keyword">this</span>.name);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> person1 = <span class="keyword">new</span> Person();</span><br><span class="line">person1.sayName();	<span class="comment">//"A"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> person2 = <span class="keyword">new</span> Person();</span><br><span class="line">person2.sayName();	<span class="comment">//"A"</span></span><br><span class="line"></span><br><span class="line">alert(person1.sayName === person2.sayName);	<span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<p>​    i、函数中原型对象和示例中的各种指向关系</p>
+<p>​    ii、原型对象</p>
+<p>​    iii、原型链：在一个对象中查找一个属性的过程（先看实例中有没有，然后查找原型中，然后一层一层的原型链查找）</p>
+
       
     </div>
     
@@ -410,8 +445,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -471,6 +515,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#2、构造函数模式"><span class="nav-number">1.</span> <span class="nav-text">2、构造函数模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、原型模式"><span class="nav-number">2.</span> <span class="nav-text">3、原型模式</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
