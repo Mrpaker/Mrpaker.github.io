@@ -161,7 +161,7 @@
       </a>
     </div>
       
-        <p class="site-subtitle">三心二用的小码农</p>
+        <p class="site-subtitle"></p>
       
   </div>
 
@@ -470,6 +470,9 @@
           
 
   
+    <div id="gitalk-container">
+    </div>
+  
 
 
 
@@ -737,6 +740,21 @@
 
 
 
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: '5ab625372f9738f97536',
+          clientSecret: '3dd5ae42ff1b72ac9236b8e233da60d004be5533',
+          repo: 'mrpaker.github.io',
+          owner: 'mrpaker',
+          admin: ['mrpaker'],
+          id: location.pathname,
+          distractionFreeMode: 'true'
+        })
+        gitalk.render('gitalk-container')           
+       </script>
 
 
   
