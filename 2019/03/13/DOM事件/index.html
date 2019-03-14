@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="js DOM,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="今天我们梳理一下DOM事件的相关知识 DOM事件级别#####DOM0级别中的事件： 在js中的写法： 1element.onclick = function() &amp;#123;&amp;#125; 在html中的写法就是onclick属性中加一个js语句 1&amp;lt;div onclick=&quot;alert(event.type)&quot;&amp;gt;click me&amp;lt;/div&amp;gt; #####DOM2级别中的事件">
+<meta name="keywords" content="js DOM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DOM事件">
+<meta property="og:url" content="http://yoursite.com/2019/03/13/DOM事件/index.html">
+<meta property="og:site_name" content="XXL的博客">
+<meta property="og:description" content="今天我们梳理一下DOM事件的相关知识 DOM事件级别#####DOM0级别中的事件： 在js中的写法： 1element.onclick = function() &amp;#123;&amp;#125; 在html中的写法就是onclick属性中加一个js语句 1&amp;lt;div onclick=&quot;alert(event.type)&quot;&amp;gt;click me&amp;lt;/div&amp;gt; #####DOM2级别中的事件">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://mrpaker.github.io/images/DOM事件模型.png">
+<meta property="og:image" content="https://mrpaker.github.io/images/DOM事件流.png">
+<meta property="og:image" content="https://mrpaker.github.io/images/事件捕获.png">
+<meta property="og:image" content="https://mrpaker.github.io/images/事件冒泡.png">
+<meta property="og:updated_time" content="2019-03-14T14:47:23.821Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="DOM事件">
+<meta name="twitter:description" content="今天我们梳理一下DOM事件的相关知识 DOM事件级别#####DOM0级别中的事件： 在js中的写法： 1element.onclick = function() &amp;#123;&amp;#125; 在html中的写法就是onclick属性中加一个js语句 1&amp;lt;div onclick=&quot;alert(event.type)&quot;&amp;gt;click me&amp;lt;/div&amp;gt; #####DOM2级别中的事件">
+<meta name="twitter:image" content="https://mrpaker.github.io/images/DOM事件模型.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/03/13/DOM事件/">
+
+
+
+
+
+  <title>DOM事件 | XXL的博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">XXL的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/13/DOM事件/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="XXL">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="XXL的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">DOM事件</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-13T23:27:22+08:00">
+                2019-03-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>今天我们梳理一下DOM事件的相关知识</p>
+<h3 id="DOM事件级别"><a href="#DOM事件级别" class="headerlink" title="DOM事件级别"></a>DOM事件级别</h3><p>#####DOM0级别中的事件：</p>
+<p>在js中的写法：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">element.onclick = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>在html中的写法就是onclick属性中加一个js语句</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">onclick</span>=<span class="string">"alert(event.type)"</span>&gt;</span>click me<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>#####DOM2级别中的事件：</p>
+<p>DOM2级为为事件增加了一个定义方式：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">element.addEventlistener(<span class="string">"click"</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;&#125;, <span class="literal">false</span>)</span><br></pre></td></tr></table></figure>
+<p>其中的第三个参数为Boolean类型，false表示冒泡，true表示捕获</p>
+<h5 id="DOM3级别中的事件："><a href="#DOM3级别中的事件：" class="headerlink" title="DOM3级别中的事件："></a>DOM3级别中的事件：</h5><p>DOM3中还是使用和DOM2中一样的定义方式，但是和DOM2不同的是，DOM3中丰富了事件的类型，例如，鼠标事件，键盘事件等等。</p>
+<p>那么问题来了，0、2、3级别都有了，为什么没有DOM1级别呢？</p>
+<p>其实DOM1级别是存在的，但是DOM1级别中并定义任何关于事件的东西，所以这边就没有提到。</p>
+<p>###DOM事件模型</p>
+<p>浏览器中的事件模型就是，捕获和冒泡。</p>
+<p><img src="https://mrpaker.github.io/images/DOM事件模型.png" alt="DOM事件模型"></p>
+<h3 id="DOM事件流"><a href="#DOM事件流" class="headerlink" title="DOM事件流"></a>DOM事件流</h3><p>一个完整的事件流分为三个阶段：事件捕获阶段、处于目标阶段和事件冒泡阶段。如下图：</p>
+<p><img src="https://mrpaker.github.io/images/DOM事件流.png" alt="DOM事件流"></p>
+<h3 id="DOM事件中捕获和冒泡的具体过程"><a href="#DOM事件中捕获和冒泡的具体过程" class="headerlink" title="DOM事件中捕获和冒泡的具体过程"></a>DOM事件中捕获和冒泡的具体过程</h3><h5 id="捕获"><a href="#捕获" class="headerlink" title="捕获"></a>捕获</h5><p>DOM2级事件规范中要求事件应该从docment对象开始传播，但是大部分浏览器都是从window对象开始捕获事件。</p>
+<p><img src="https://mrpaker.github.io/images/事件捕获.png" alt="事件捕获"></p>
+<h5 id="冒泡"><a href="#冒泡" class="headerlink" title="冒泡"></a>冒泡</h5><p>冒泡也就是和捕获相反的从目标元素向上，一层一层的，一直到达window对象</p>
+<p><img src="https://mrpaker.github.io/images/事件冒泡.png" alt="事件"></p>
+<h3 id="事件对象常见的属性-方法"><a href="#事件对象常见的属性-方法" class="headerlink" title="事件对象常见的属性/方法"></a>事件对象常见的属性/方法</h3><p>#####event.preventDefault()</p>
+<p>取消事件的默认行为。</p>
+<p>例如在<a>标签中的点击事件中调用该函数，那么就会阻止<a>标签默认的链接跳转事件。</a></a></p>
+<h5 id="event-stopPropagation"><a href="#event-stopPropagation" class="headerlink" title="event.stopPropagation()"></a>event.stopPropagation()</h5><p>取消事件的进一步捕获或冒泡。</p>
+<p>举个例子，一个父元素，一个子元素，都有自己的点击事件，如果我想让子元素点击之后不在冒泡执行父元素的点击事件，就需要调用该函数，阻止事件继续冒泡。</p>
+<h5 id="event-stopImmediatePropagation"><a href="#event-stopImmediatePropagation" class="headerlink" title="event.stopImmediatePropagation()"></a>event.stopImmediatePropagation()</h5><p>取消事件的进一步捕获或冒泡，同时阻止任何事件处理程序被调用（DOM3级事件中新增）。</p>
+<p>这个方法和上一个非常相似，但是看后面一句话，同时，阻止任何事件处理程序被调用！这个非常重要。</p>
+<p>比如，一个元素绑定了两个click事件，那么当第一个click事件调用了该函数，那么后面一个click事件就不能被调用了，而<code>stopPropagation()</code>是做不到这一点的。那么什么时候会用到这个函数呢，比如事件的优先级问题。</p>
+<h5 id="event-target"><a href="#event-target" class="headerlink" title="event.target"></a>event.target</h5><p>事件的目标，也就是当前被点击的元素。</p>
+<h5 id="event-currentTarget"><a href="#event-currentTarget" class="headerlink" title="event.currentTarget"></a>event.currentTarget</h5><p>其事件处理程序当前正在处理事件的那个元素。</p>
+<p>定义比较生硬，举个例子大家就应该都明白了。例如，有一个父元素，下面有N多子元素，那么每一个子元素都绑定一个click事件，代码大家可想而知，那么优化的办法就是事件委托：在父元素中定义一个click事件，然后通过子元素的id来区分不同的子元素的点击，那么 <code>event.target</code> 就是子元素，而 <code>event.currentTarget</code> 就是这个父元素。</p>
+<h3 id="自定义DOM事件"><a href="#自定义DOM事件" class="headerlink" title="自定义DOM事件"></a>自定义DOM事件</h3><p>我们先来看一段代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> eve = <span class="keyword">new</span> Event(<span class="string">"custome"</span>);</span><br><span class="line">element.addEventListener(<span class="string">"custome"</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"custome"</span>);</span><br><span class="line">&#125;);</span><br><span class="line">element.dispatchEvent(eve);	<span class="comment">// "custome"</span></span><br></pre></td></tr></table></figure>
+<p>第一行代码，我们定义了一个事件，第二行，我们给元素绑定了这个事件，第三行，我们触发了这个事件，这样就完成了一个自定义事件的整个流程。</p>
+<p>那么可能大家就会有问题了，我们业务中事件中经常带参数，可是这样子定义我们就没办法传参数，其实还有一种自定义事件的方法：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> eve = <span class="keyword">new</span> CustomeEvent(<span class="string">"custome"</span>， &#123;<span class="attr">detail</span>: <span class="string">"CustomeEvent"</span>&#125;);</span><br><span class="line"><span class="keyword">var</span> eve = <span class="keyword">new</span> Event(<span class="string">"custome"</span>);</span><br><span class="line">element.addEventListener(<span class="string">"custome"</span>, <span class="function"><span class="keyword">function</span>(<span class="params">event</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(event.detail);</span><br><span class="line">&#125;);</span><br><span class="line">element.dispatchEvent(eve); <span class="comment">// "CustomeEvent"</span></span><br></pre></td></tr></table></figure>
+<p>使用 <code>CustomeEvent</code> 我们就可以给事件传参数了，是不是非常简单呢？</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/js-DOM/" rel="tag"># js DOM</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/10/js-prototype/" rel="next" title="js原型和原型链">
+                <i class="fa fa-chevron-left"></i> js原型和原型链
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div id="gitalk-container">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">XXL</p>
+              <p class="site-description motion-element" itemprop="description">分享，记录，感悟</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#DOM事件级别"><span class="nav-number">1.</span> <span class="nav-text">DOM事件级别</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#DOM3级别中的事件："><span class="nav-number">1.0.1.</span> <span class="nav-text">DOM3级别中的事件：</span></a></li></ol></li></ol><li class="nav-item nav-level-3"><a class="nav-link" href="#DOM事件流"><span class="nav-number">2.</span> <span class="nav-text">DOM事件流</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DOM事件中捕获和冒泡的具体过程"><span class="nav-number">3.</span> <span class="nav-text">DOM事件中捕获和冒泡的具体过程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#捕获"><span class="nav-number">3.0.1.</span> <span class="nav-text">捕获</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#冒泡"><span class="nav-number">3.0.2.</span> <span class="nav-text">冒泡</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#事件对象常见的属性-方法"><span class="nav-number">4.</span> <span class="nav-text">事件对象常见的属性/方法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#event-stopPropagation"><span class="nav-number">4.0.1.</span> <span class="nav-text">event.stopPropagation()</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#event-stopImmediatePropagation"><span class="nav-number">4.0.2.</span> <span class="nav-text">event.stopImmediatePropagation()</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#event-target"><span class="nav-number">4.0.3.</span> <span class="nav-text">event.target</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#event-currentTarget"><span class="nav-number">4.0.4.</span> <span class="nav-text">event.currentTarget</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义DOM事件"><span class="nav-number">5.</span> <span class="nav-text">自定义DOM事件</span></a></li></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">XXL</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: '5ab625372f9738f97536',
+          clientSecret: '3dd5ae42ff1b72ac9236b8e233da60d004be5533',
+          repo: 'mrpaker.github.io',
+          owner: 'mrpaker',
+          admin: ['mrpaker'],
+          id: '1552490842000', // //location.pathname,
+          distractionFreeMode: 'true'
+        })
+        gitalk.render('gitalk-container')           
+       </script>
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
