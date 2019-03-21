@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="js,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Ajax技术的出现，使浏览器能够像服务器请求额外的数据而无须重新加载界面，带来了更好的用户体验。Ajax技术的核心是XMLHttpRequest对象（简称XHR）。 XMLHttpRequest对象创建创建一个XHR对象非常简单，只需要使用XMLHttpRequest构造函数即可： 1var xhr = new XMLHttpRequest()  在IE7之前的IE版本中，使用的是ActiveXO">
+<meta name="keywords" content="js">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ajax和跨域">
+<meta property="og:url" content="http://yoursite.com/2019/03/21/Ajax/index.html">
+<meta property="og:site_name" content="XXL的博客">
+<meta property="og:description" content="Ajax技术的出现，使浏览器能够像服务器请求额外的数据而无须重新加载界面，带来了更好的用户体验。Ajax技术的核心是XMLHttpRequest对象（简称XHR）。 XMLHttpRequest对象创建创建一个XHR对象非常简单，只需要使用XMLHttpRequest构造函数即可： 1var xhr = new XMLHttpRequest()  在IE7之前的IE版本中，使用的是ActiveXO">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-03-21T14:46:17.207Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ajax和跨域">
+<meta name="twitter:description" content="Ajax技术的出现，使浏览器能够像服务器请求额外的数据而无须重新加载界面，带来了更好的用户体验。Ajax技术的核心是XMLHttpRequest对象（简称XHR）。 XMLHttpRequest对象创建创建一个XHR对象非常简单，只需要使用XMLHttpRequest构造函数即可： 1var xhr = new XMLHttpRequest()  在IE7之前的IE版本中，使用的是ActiveXO">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/03/21/Ajax/">
+
+
+
+
+
+  <title>Ajax和跨域 | XXL的博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">XXL的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/21/Ajax/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="XXL">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="XXL的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Ajax和跨域</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-21T22:39:24+08:00">
+                2019-03-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Ajax技术的出现，使浏览器能够像服务器请求额外的数据而无须重新加载界面，带来了更好的用户体验。Ajax技术的核心是XMLHttpRequest对象（简称XHR）。</p>
+<h2 id="XMLHttpRequest对象"><a href="#XMLHttpRequest对象" class="headerlink" title="XMLHttpRequest对象"></a>XMLHttpRequest对象</h2><h3 id="创建"><a href="#创建" class="headerlink" title="创建"></a>创建</h3><p>创建一个XHR对象非常简单，只需要使用XMLHttpRequest构造函数即可：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> xhr = <span class="keyword">new</span> XMLHttpRequest()</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>在IE7之前的IE版本中，使用的是ActiveXObject构造函数来创建，不过现在应该大多数应用都不会兼容这么老版本的浏览器了，如果业务需要的话，自行查找相关内容就好了，这里就不在赘述了。</p>
+</blockquote>
+<p>启动一个请求，最少需要两行代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">xhr.open(<span class="string">"get"</span>, <span class="string">"example.htpl"</span>, <span class="literal">false</span>)</span><br><span class="line">xhr.send(<span class="literal">null</span>)</span><br></pre></td></tr></table></figure>
+<p>第一句，开启一个Ajax请求，第一个参数是请求的方法（”get”，”post”等），第二个参数是请求的链接，第三个参数表示是否异步发送请求。</p>
+<p>第二句，发送请求，send() 方法接受一个参数，作为请求主体发送的数据，如果不需要通过请求主体发送数据，则必须传入null，因为这个参数对有些浏览器来说是必须的，所以为了保险起见，还会加上为好。调用<code>send()</code>之后，请求就会被发送到服务器。</p>
+<p>需要注意的是，以上代码为同步请求，所以JavaScript代码会等待服务器响应之后再继续执行。如果需要异步，<code>open</code>的第三个参数设为true就可以了。</p>
+<p>当收到响应后，响应的数据会自动填充XHR对象的属性：</p>
+<ul>
+<li>responseText：作为响应主体被返回的文本。</li>
+<li>responseXML：如果响应的内容类型是”text/xml”或”application/xml”，这个属性中将保存包含着响应数据的XML DOM文档。</li>
+<li>status：响应的HTTP状态。</li>
+<li>statusText：HTTP状态的说明。</li>
+</ul>
+<h3 id="设置HTTP头部信息"><a href="#设置HTTP头部信息" class="headerlink" title="设置HTTP头部信息"></a>设置HTTP头部信息</h3><p>可以使用<code>setRequestHeader()</code>方法来设置自定义的请求头部信息：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xhr.setRequestHeader(<span class="string">"headerKey"</span>, <span class="string">"headerValue"</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="接收数据"><a href="#接收数据" class="headerlink" title="接收数据"></a>接收数据</h3><h5 id="同步"><a href="#同步" class="headerlink" title="同步"></a>同步</h5><p>同步接收数据就非常简单了，上面已经提到过，等待服务器响应之后，填充XHR对象，我们只要读取XHR对象中的属性就可以接受响应数据了：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">xhr.open(<span class="string">"get"</span>, <span class="string">"example.htpl"</span>, <span class="literal">false</span>)</span><br><span class="line">xhr.send(<span class="literal">null</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> ((xhr.status &gt;= <span class="number">200</span> &amp;&amp; xhr.status &lt;= <span class="number">300</span>) || xhr.status == <span class="number">304</span>) &#123;</span><br><span class="line">  alert(xhr.responseText);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  alert(<span class="string">"failed :"</span>, xhr.status)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>关于返回的状态码含义，后面将会有文章介绍。</p>
+<h5 id="异步"><a href="#异步" class="headerlink" title="异步"></a>异步</h5><p>接收异步请求的数据，我们可以使用load事件。当响应接收完毕之后将会触发load事件，load事件会接收到一个event对象，其target属性就是指向XHR对象实例，因此可以访问到XHR对象的所有方法和属性，但是并不是所有浏览器都实现了这个event对象，所以使用的时候最好还是读取XHR对象的属性：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">xhr.open(<span class="string">"get"</span>, <span class="string">"example.htpl"</span>, <span class="literal">true</span>)</span><br><span class="line">xhr.send(<span class="literal">null</span>)</span><br><span class="line"></span><br><span class="line">xhr.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> ((xhr.status &gt;= <span class="number">200</span> &amp;&amp; xhr.status &lt;= <span class="number">300</span>) || xhr.status == <span class="number">304</span>) &#123;</span><br><span class="line">    alert(xhr.responseText);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    alert(<span class="string">"failed :"</span>, xhr.status)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="取消请求"><a href="#取消请求" class="headerlink" title="取消请求"></a>取消请求</h3><p>在接收到响应之前可以使用<code>abort()</code>方法来取消<strong>异步</strong>请求：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xhr.abort()</span><br></pre></td></tr></table></figure>
+<h2 id="跨域"><a href="#跨域" class="headerlink" title="跨域"></a>跨域</h2><p>通过XHR实现Ajax通信的一个主要限制，就是跨域安全策略。</p>
+<p>XHR对象只能访问与包含它的页面位于同一个域中的资源。这种同源策略是浏览器为了防止一些恶意行为而制定的。但是有时候，我们需要请求不同源服务器的接口怎么办呢？接下来就是讲解跨域的几个解决方案。</p>
+<h3 id="JSONP-Json-with-padding"><a href="#JSONP-Json-with-padding" class="headerlink" title="JSONP (Json with padding)"></a>JSONP (Json with padding)</h3><p>这种方法的原理是：<code>&lt;script&gt;</code>标签能够不受限制的从其他域加载资源，通过这个原理，动态的加载<code>&lt;script&gt;</code>标签(请求接口)，来实现跨域的服务器请求。</p>
+<p>例如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">handleResponse</span>(<span class="params">response</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(response)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> script = <span class="built_in">document</span>.createElement(<span class="string">"script"</span>)</span><br><span class="line">script.src = <span class="string">"http://another.com/api/json/?callback=handleResponse"</span></span><br><span class="line"><span class="built_in">document</span>.body.insertBefor(script, <span class="built_in">document</span>.body.firstChild)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 服务器返回</span></span><br><span class="line">&lt;script&gt;</span><br><span class="line">	  handleResponse(&#123;<span class="attr">name</span>: <span class="string">'jack'</span>&#125;)</span><br><span class="line">&lt;<span class="regexp">/scrpit&gt;</span></span><br></pre></td></tr></table></figure>
+<p>在<code>&lt;script&gt;</code>标签的<code>src</code>中写入想要请求的接口，并且一般都会带上一个类似于callback的参数和需要的其他参数，而服务器返回的也是一段JavaScript代码，并且带上了客户端想要的数据，加载到DOM上之后，被直接执行，调用了response函数，这样就实现了一个从请求到响应的完整流程，而且完成了跨域的需求。</p>
+<p>当然还有很多标签能够实现跨域请求，如<code>&lt;img&gt;</code>这里就不一一列举了。</p>
+<h3 id="Web-Sockets"><a href="#Web-Sockets" class="headerlink" title="Web Sockets"></a>Web Sockets</h3><p>web Sockets是不受跨域限制的，所以web Sockets也是跨域的一个解决方案的选择。</p>
+<h5 id="API"><a href="#API" class="headerlink" title="API"></a>API</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> socket = <span class="keyword">new</span> WebSocket(<span class="string">"wss://www.example.com/server"</span>) <span class="comment">// 创建</span></span><br><span class="line">socket.onopen = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;	<span class="comment">// 当成功建立连接时触发</span></span><br><span class="line">  ws.send(<span class="string">"hello"</span>)	<span class="comment">// 发送消息</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">socket.onmessage = <span class="function"><span class="keyword">function</span>(<span class="params">event</span>) </span>&#123;	<span class="comment">// 监听服务端返回的消息</span></span><br><span class="line">  <span class="keyword">var</span> data = event.data</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">socket.onerror = <span class="function"><span class="keyword">function</span>(<span class="params">err</span>) </span>&#123;		<span class="comment">//在发生错误时触发，连接不能继续 </span></span><br><span class="line">  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">socket.onclose = <span class="function"><span class="keyword">function</span>(<span class="params">event</span>) </span>&#123;		<span class="comment">// 在连接关闭时触发</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">socket.close()	<span class="comment">// 关闭连接</span></span><br></pre></td></tr></table></figure>
+<p>api比较简单，能熟练使用以上api就已经基本上掌握了。</p>
+<h3 id="CORS-跨域源资源共享"><a href="#CORS-跨域源资源共享" class="headerlink" title="CORS (跨域源资源共享)"></a>CORS (跨域源资源共享)</h3><p>CORS的基本原理，就是使用自定义的HTTP头部让浏览器与服务器进行沟通，从而决定请求和响应是否成功。</p>
+<p>也就是说，在我们发送一个请求是，给它额外的附加一个<code>Origin</code>头部，其中包含请求页面的源信息(协议、域名、端口)，一遍服务器根据这个头部信息来决定是否给予响应，如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Origin: http:<span class="comment">//www.myWeb.com</span></span><br></pre></td></tr></table></figure>
+<p>如果服务器认为这个请求可以接受，就会在<code>Access-Control-Allow-Origin</code>头部中回发相同的源信息(如果是公共的资源，可以回发” * “)。例如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Access-Control-Allow-Origin: http:<span class="comment">//www.myWeb.com</span></span><br></pre></td></tr></table></figure>
+<p>如果没有这个头部，或者这个头部源信息不匹配，那么浏览器就会拒绝请求。</p>
+<h3 id="postMessage"><a href="#postMessage" class="headerlink" title="postMessage"></a>postMessage</h3><p>postMessage是新兴的api，可以实现安全的跨域通信，具体的api使用请看<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Window/postMessage" target="_blank" rel="noopener">window.postMessage</a>。</p>
+<p>这种方式可以对于两个页面的脚本之间进行跨域通信。</p>
+<p>示例代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * A窗口的域名是&lt;http://example.com:8080&gt;，以下是A窗口的script标签下的代码：</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> popup = <span class="built_in">window</span>.open(...popup details...);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 如果弹出框没有被阻止且加载完成</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 这行语句没有发送信息出去，即使假设当前页面没有改变location（因为targetOrigin设置不对）</span></span><br><span class="line">popup.postMessage(<span class="string">"The user is 'bob' and the password is 'secret'"</span>,</span><br><span class="line">                  <span class="string">"https://secure.example.net"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 假设当前页面没有改变location，这条语句会成功添加message到发送队列中去（targetOrigin设置对了）</span></span><br><span class="line">popup.postMessage(<span class="string">"hello there!"</span>, <span class="string">"http://example.org"</span>);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">receiveMessage</span>(<span class="params">event</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="comment">// 我们能相信信息的发送者吗?  (也许这个发送者和我们最初打开的不是同一个页面).</span></span><br><span class="line">  <span class="keyword">if</span> (event.origin !== <span class="string">"http://example.org"</span>)</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// event.source 是我们通过window.open打开的弹出页面 popup</span></span><br><span class="line">  <span class="comment">// event.data 是 popup发送给当前页面的消息 "hi there yourself!  the secret response is: rheeeeet!"</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">window</span>.addEventListener(<span class="string">"message"</span>, receiveMessage, <span class="literal">false</span>);</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 弹出页 popup 域名是&lt;http://example.org&gt;，以下是script标签中的代码:</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//当A页面postMessage被调用后，这个function被addEventListenner调用</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">receiveMessage</span>(<span class="params">event</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="comment">// 我们能信任信息来源吗？</span></span><br><span class="line">  <span class="keyword">if</span> (event.origin !== <span class="string">"http://example.com:8080"</span>)</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// event.source 就当前弹出页的来源页面</span></span><br><span class="line">  <span class="comment">// event.data 是 "hello there!"</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 假设你已经验证了所受到信息的origin (任何时候你都应该这样做), 一个很方便的方式就是把enent.source</span></span><br><span class="line">  <span class="comment">// 作为回信的对象，并且把event.origin作为targetOrigin</span></span><br><span class="line">  event.source.postMessage(<span class="string">"hi there yourself!  the secret response "</span> +</span><br><span class="line">                           <span class="string">"is: rheeeeet!"</span>,</span><br><span class="line">                           event.origin);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">window</span>.addEventListener(<span class="string">"message"</span>, receiveMessage, <span class="literal">false</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="HASH"><a href="#HASH" class="headerlink" title="HASH"></a>HASH</h3><p>首先什么是hash呢？</p>
+<p>一个链接：<code>http://www.ep.com/index#data</code>，而<code>#</code>后面的字符串就是所谓的hash。那么怎么通过hash来进行跨域通信呢？</p>
+<p>首先改变页面的hash，页面是不会刷新的，这一点非常重要！在这一点的前提下，我们来通过代码演示：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 场景是当前页面A 通过iframe或frame嵌入了跨域的页面B</span></span><br><span class="line"><span class="keyword">var</span> B = <span class="built_in">document</span>.getElementByTagName(<span class="string">"iframe"</span>)</span><br><span class="line">B.src = B.src + <span class="string">'#'</span> + <span class="string">'data'</span>	<span class="comment">// 将需要传送的数据放入hash中</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 在B中脚本</span></span><br><span class="line"><span class="built_in">window</span>.onhashchange = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;	<span class="comment">// 监听hash改变</span></span><br><span class="line">  <span class="keyword">var</span> data = <span class="built_in">window</span>.location.hash	<span class="comment">// 获取A页面传送的数据</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样B页面就能得到A页面传过来的数据（示例中比较简单，如果实际使用，得到的数据需要做处理）了，也就实现了跨域通信。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/js/" rel="tag"># js</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/13/DOM事件/" rel="next" title="DOM事件">
+                <i class="fa fa-chevron-left"></i> DOM事件
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/21/Ajax/" rel="prev" title="Ajax和跨域">
+                Ajax和跨域 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div id="gitalk-container">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">XXL</p>
+              <p class="site-description motion-element" itemprop="description">分享，记录，感悟</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#XMLHttpRequest对象"><span class="nav-number">1.</span> <span class="nav-text">XMLHttpRequest对象</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建"><span class="nav-number">1.1.</span> <span class="nav-text">创建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置HTTP头部信息"><span class="nav-number">1.2.</span> <span class="nav-text">设置HTTP头部信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#接收数据"><span class="nav-number">1.3.</span> <span class="nav-text">接收数据</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#同步"><span class="nav-number">1.3.0.1.</span> <span class="nav-text">同步</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#异步"><span class="nav-number">1.3.0.2.</span> <span class="nav-text">异步</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#取消请求"><span class="nav-number">1.4.</span> <span class="nav-text">取消请求</span></a></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#跨域"><span class="nav-number">2.</span> <span class="nav-text">跨域</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#JSONP-Json-with-padding"><span class="nav-number">2.1.</span> <span class="nav-text">JSONP (Json with padding)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web-Sockets"><span class="nav-number">2.2.</span> <span class="nav-text">Web Sockets</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#API"><span class="nav-number">2.2.0.1.</span> <span class="nav-text">API</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CORS-跨域源资源共享"><span class="nav-number">2.3.</span> <span class="nav-text">CORS (跨域源资源共享)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#postMessage"><span class="nav-number">2.4.</span> <span class="nav-text">postMessage</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HASH"><span class="nav-number">2.5.</span> <span class="nav-text">HASH</span></a></li></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">XXL</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: '5ab625372f9738f97536',
+          clientSecret: '3dd5ae42ff1b72ac9236b8e233da60d004be5533',
+          repo: 'mrpaker.github.io',
+          owner: 'mrpaker',
+          admin: ['mrpaker'],
+          id: '1553179164063', // //location.pathname,
+          distractionFreeMode: 'true'
+        })
+        gitalk.render('gitalk-container')           
+       </script>
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
