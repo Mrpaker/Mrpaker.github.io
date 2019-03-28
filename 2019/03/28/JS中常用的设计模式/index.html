@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="js,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="​    在平常的前端开发当中，我们可能很少会接触到关于设计模式的用法，因为当项目不算庞大的时候，可以说一般的编程思想足够应付项目的需求了，但是，当项目庞大到一定的程度，灵活的使用设计模式，可以让我们的代码更加精简，易维护；所以平常你想不起来用，当你的项目复杂到令人头疼时，你就会开始翻阅各种资料，来查找精简代码的方案，使用巧妙的设计模式就是其中之一。 ​    我们这里只介绍常用的设计模式几种设计">
+<meta name="keywords" content="js">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JS中常用的设计模式">
+<meta property="og:url" content="http://yoursite.com/2019/03/28/JS中常用的设计模式/index.html">
+<meta property="og:site_name" content="XXL的博客">
+<meta property="og:description" content="​    在平常的前端开发当中，我们可能很少会接触到关于设计模式的用法，因为当项目不算庞大的时候，可以说一般的编程思想足够应付项目的需求了，但是，当项目庞大到一定的程度，灵活的使用设计模式，可以让我们的代码更加精简，易维护；所以平常你想不起来用，当你的项目复杂到令人头疼时，你就会开始翻阅各种资料，来查找精简代码的方案，使用巧妙的设计模式就是其中之一。 ​    我们这里只介绍常用的设计模式几种设计">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-03-28T14:43:29.660Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JS中常用的设计模式">
+<meta name="twitter:description" content="​    在平常的前端开发当中，我们可能很少会接触到关于设计模式的用法，因为当项目不算庞大的时候，可以说一般的编程思想足够应付项目的需求了，但是，当项目庞大到一定的程度，灵活的使用设计模式，可以让我们的代码更加精简，易维护；所以平常你想不起来用，当你的项目复杂到令人头疼时，你就会开始翻阅各种资料，来查找精简代码的方案，使用巧妙的设计模式就是其中之一。 ​    我们这里只介绍常用的设计模式几种设计">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/03/28/JS中常用的设计模式/">
+
+
+
+
+
+  <title>JS中常用的设计模式 | XXL的博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">XXL的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/28/JS中常用的设计模式/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="XXL">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="XXL的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">JS中常用的设计模式</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-28T22:43:29+08:00">
+                2019-03-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>​    在平常的前端开发当中，我们可能很少会接触到关于设计模式的用法，因为当项目不算庞大的时候，可以说一般的编程思想足够应付项目的需求了，但是，当项目庞大到一定的程度，灵活的使用设计模式，可以让我们的代码更加精简，易维护；所以平常你想不起来用，当你的项目复杂到令人头疼时，你就会开始翻阅各种资料，来查找精简代码的方案，使用巧妙的设计模式就是其中之一。</p>
+<p>​    我们这里只介绍常用的设计模式几种设计模式，对于一些过于高深，或者非常少见的大家可以翻阅<a href="https://addyosmani.com/resources/essentialjsdesignpatterns/book/#observerpatternjavascript" target="_blank" rel="noopener">这里</a>查找相关资料。</p>
+<h3 id="观察者模式"><a href="#观察者模式" class="headerlink" title="观察者模式"></a>观察者模式</h3><p>​    观察者模式的基本原理就是，通过一个对象，对象中维护一个观察者的列表，等到合适的触发条件时，通知所有观察者。</p>
+<p>​    打个比喻：有一只股票，买了它的人想当股价变化时，就能马上知道变化的动向，是跌了还是涨了，然后有一个人，他每时每刻都看着这只股票的价格，然后大家就说，你看到股票价格变了，你就通知我们一下吧！这个人说，可以呀，但是你们每个人得留个电话，要不然我怎么通知你们呢，对吧，然后这个人就把大家的电话都记下来了，只要股票发生了变化，就马上群发短信给所有人，股票是跌了还是涨了呀。</p>
+<p>​    这个打电话的人就是 <strong>主体</strong>，而想知道股票动向的人就是 <strong>观察者</strong> ，而观察者必须要有电话才能接受到消息，在js中就是观察者对象必须要有 <strong>指定接受消息的方法</strong>。</p>
+<p>​    我们来看在代码中如何实现，我们首先定义一个观察者列表的一些基本方法：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">ObserverList</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="keyword">this</span>.observerList = []; </span><br><span class="line">&#125;</span><br><span class="line">ObserverList.prototype.add = <span class="function"><span class="keyword">function</span>(<span class="params">obj</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">this</span>.observerList.push(obj);</span><br><span class="line">&#125;</span><br><span class="line">ObserverList.prototype.removeAt = <span class="function"><span class="keyword">function</span>(<span class="params"> index </span>)</span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.observerList.splice( index, <span class="number">1</span> );</span><br><span class="line">&#125;;</span><br><span class="line">ObserverList.prototype.get = <span class="function"><span class="keyword">function</span>(<span class="params"> index </span>)</span>&#123;</span><br><span class="line">  <span class="keyword">if</span>( index &gt; <span class="number">-1</span> &amp;&amp; index &lt; <span class="keyword">this</span>.observerList.length )&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.observerList[ index ];</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">ObserverList.prototype.indexOf = <span class="function"><span class="keyword">function</span>(<span class="params"> obj, startIndex </span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> i = startIndex;</span><br><span class="line"> </span><br><span class="line">  <span class="keyword">while</span>( i &lt; <span class="keyword">this</span>.observerList.length )&#123;</span><br><span class="line">    <span class="keyword">if</span>( <span class="keyword">this</span>.observerList[i] === obj )&#123;</span><br><span class="line">      <span class="keyword">return</span> i;</span><br><span class="line">    &#125;</span><br><span class="line">    i++;</span><br><span class="line">  &#125;</span><br><span class="line"> </span><br><span class="line">  <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;;</span><br><span class="line">ObserverList.prototype.count = <span class="function"><span class="keyword">function</span>(<span class="params">obj</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">this</span>.observerList.length;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​    然后我们通过定义主体部分方法：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Subject</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.observers = <span class="keyword">new</span> ObserverList();</span><br><span class="line">&#125;</span><br><span class="line">Subject.prototype.addObserver = <span class="function"><span class="keyword">function</span>(<span class="params">observer</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.observers.add(observer)</span><br><span class="line">&#125;</span><br><span class="line">Subject.prototype.removeObserver = <span class="function"><span class="keyword">function</span>(<span class="params">observer</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.observers.removeAt(<span class="keyword">this</span>.observers.indexOf(observer, <span class="number">0</span>))</span><br><span class="line">&#125;</span><br><span class="line">Subject.prototype.notify = <span class="function"><span class="keyword">function</span>(<span class="params">context</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> observerCount = <span class="keyword">this</span>.observers.count();</span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; observerCount; i++) &#123;</span><br><span class="line">    <span class="keyword">this</span>.observers.get(i).update(context)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​    然后我们来创建一个观察者的类：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Observer</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="keyword">this</span>.update = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;	<span class="comment">// 实例可以重新定义，来达到覆盖的作用</span></span><br><span class="line">	&#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​    具体的使用可以看我的github仓库中的<a href="https://github.com/Mrpaker/JavaScript-Design-Patterns-Demo/tree/master/The-Observer-Pattern" target="_blank" rel="noopener">示例代码</a>。</p>
+<h3 id="发布-订阅模式"><a href="#发布-订阅模式" class="headerlink" title="发布/订阅模式"></a>发布/订阅模式</h3><p>​    发布/订阅模式和观察者模式非常相似，但是还是存在着一些差异。</p>
+<p>​    观察者模式维护了一个观察者对象的列表，而且每个对象都必须含有指定的方法，才可以完成整个流程。</p>
+<p>​    然而，发布/订阅模式，使用函数作为通道，来连接两者之间的关系，这样做的好处就是避免了订阅者和发布者之间的依赖关系，使我们的程序分解为更小，更松散耦合的块。</p>
+<p>​    我们来看一种简单的实现方法:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Pubsub</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.topics = &#123;&#125;;	<span class="comment">// 用来维护不同类型事件的订阅函数</span></span><br><span class="line">  <span class="keyword">this</span>.subUid = <span class="number">-1</span>;	<span class="comment">// 给订阅函数的唯一标识</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 发布消息</span></span><br><span class="line">Pubsub.prototype.publish = <span class="function"><span class="keyword">function</span>(<span class="params"> topic, args </span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> topics = <span class="keyword">this</span>.topics;</span><br><span class="line">  <span class="keyword">if</span> ( !topics[topic] ) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> subscribers = topics[topic],</span><br><span class="line">      len = subscribers ? subscribers.length : <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">while</span> (len--) &#123;</span><br><span class="line">      subscribers[len].func( topic, args );</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 订阅消息</span></span><br><span class="line">Pubsub.prototype.subscribe = <span class="function"><span class="keyword">function</span>(<span class="params"> topic, func </span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> topics = <span class="keyword">this</span>.topics;</span><br><span class="line">  <span class="keyword">if</span> (!topics[topic]) &#123;</span><br><span class="line">      topics[topic] = [];</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> token = ( ++<span class="keyword">this</span>.subUid ).toString();</span><br><span class="line">  topics[topic].push(&#123;</span><br><span class="line">      token: token,</span><br><span class="line">      func: func</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">return</span> token;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 取消订阅</span></span><br><span class="line">Pubsub.prototype.unsubscribe = <span class="function"><span class="keyword">function</span>(<span class="params"> token </span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> topics = <span class="keyword">this</span>.topics;</span><br><span class="line">  <span class="keyword">for</span> ( <span class="keyword">var</span> m <span class="keyword">in</span> topics ) &#123;</span><br><span class="line">      <span class="keyword">if</span> ( topics[m] ) &#123;</span><br><span class="line">          <span class="keyword">for</span> ( <span class="keyword">var</span> i = <span class="number">0</span>, j = topics[m].length; i &lt; j; i++ ) &#123;</span><br><span class="line">              <span class="keyword">if</span> ( topics[m][i].token === token ) &#123;</span><br><span class="line">                  topics[m].splice( i, <span class="number">1</span> );</span><br><span class="line">                  <span class="keyword">return</span> token;</span><br><span class="line">              &#125;</span><br><span class="line">          &#125;</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> pubsub = <span class="keyword">new</span> Pubsub()</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用：</span></span><br><span class="line"><span class="keyword">var</span> messageLogger = <span class="function"><span class="keyword">function</span> (<span class="params"> topics, data </span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log( <span class="string">"Logging: "</span> + topics + <span class="string">": "</span> + data );</span><br><span class="line">  <span class="comment">// 这里可以使很多观察者接受到消息后，自行处理</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> subscription = pubsub.subscribe( <span class="string">"inbox/newMessage"</span>, messageLogger );</span><br><span class="line"></span><br><span class="line">pubsub.publish( <span class="string">"inbox/newMessage"</span>, <span class="string">"hello world!"</span> ); <span class="comment">// Logging: inbox/newMessage: hello world!</span></span><br><span class="line"></span><br><span class="line">pubsub.publish( <span class="string">"inbox/newMessage"</span>, [<span class="string">"test"</span>, <span class="string">"a"</span>, <span class="string">"b"</span>, <span class="string">"c"</span>] );  <span class="comment">// Logging: inbox/newMessage: test,a,b,c</span></span><br><span class="line"></span><br><span class="line">pubsub.publish( <span class="string">"inbox/newMessage"</span>, &#123;</span><br><span class="line">sender: <span class="string">"hello@google.com"</span>,</span><br><span class="line">body: <span class="string">"Hey again!"</span></span><br><span class="line">&#125;); <span class="comment">// Logging: inbox/newMessage: [object Object]</span></span><br><span class="line"></span><br><span class="line">pubsub.unsubscribe( subscription );</span><br><span class="line"></span><br><span class="line">pubsub.publish( <span class="string">"inbox/newMessage"</span>, <span class="string">"Hello! are you still there?"</span> );  <span class="comment">// 这里不会再打印了</span></span><br></pre></td></tr></table></figure>
+<p>​    虽然这种设计模式有松散的耦合关系，但是也不是没有缺点。例如，发布者可以有一个或多个订阅者正在收听它们。假设我们使用这样来记录或输出有关某些应用程序进程的错误。如果执行日志记录崩溃（或由于某种原因无法运行），由于系统的分离性质，发布者将无法看到这种情况。</p>
+<h3 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h3><p>​    单例模式应该是我们最常见的一种设计模式了，这种模式使得全局中某一种类只有一个实例化对象，所以称之为单例。</p>
+<p>​    单例与静态的对象不同，我们可以延迟他们的初始化。从实现的角度来说，我们一般使用闭包来实现单例。</p>
+<p>​    以下是简单的实现方式：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> SingletonTester = (<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">Singleton</span>(<span class="params">options = &#123;&#125;</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">this</span>.name = <span class="string">"SingletonTester"</span>;</span><br><span class="line">    <span class="keyword">this</span>.color = options.color || <span class="string">"red"</span>;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> instance;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> _static = &#123;</span><br><span class="line">    name: <span class="string">"SingletonTester"</span>,</span><br><span class="line"></span><br><span class="line">    getInstance: <span class="function"><span class="keyword">function</span>(<span class="params">options</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">if</span> (instance === <span class="literal">undefined</span>) &#123;</span><br><span class="line">        instance = <span class="keyword">new</span> Singleton(options);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">return</span> instance</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="keyword">return</span> _static;</span><br><span class="line">&#125;)();</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> singletonTest1 = SingletonTester.getInstance(&#123;</span><br><span class="line">  color: <span class="string">"green"</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> singletonTest2 = SingletonTester.getInstance();</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(singletonTest1.color); <span class="comment">// "green"</span></span><br><span class="line"><span class="built_in">console</span>.log(singletonTest2.color); <span class="comment">// "green"</span></span><br><span class="line"><span class="built_in">console</span>.log(singletonTest1 === singletonTest2);  <span class="comment">// true 说明获得的是同一个对象</span></span><br></pre></td></tr></table></figure>
+<h3 id="工厂模式"><a href="#工厂模式" class="headerlink" title="工厂模式"></a>工厂模式</h3><p>​    工厂模式是一种常用的用来创建对象有关的创建模式。工厂模式提供了创建对象的通用接口，我们可以通过参数控制，来创建我们想要的对象类型。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Car</span>(<span class="params">options</span>) </span>&#123;</span><br><span class="line"> 	<span class="keyword">this</span>.doors = options.doors || <span class="number">4</span>;</span><br><span class="line">  <span class="keyword">this</span>.state = options.state || <span class="string">"brand new"</span>;</span><br><span class="line">  <span class="keyword">this</span>.color = options.color || <span class="string">'black'</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Truck</span>(<span class="params">options</span>) </span>&#123;</span><br><span class="line"> 	<span class="keyword">this</span>.state = options.state || <span class="string">"used"</span>;</span><br><span class="line">  <span class="keyword">this</span>.wheelSize = options.wheelSize || <span class="string">"large"</span>;</span><br><span class="line">  <span class="keyword">this</span>.color = options.color || <span class="string">'blue'</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">VehicleFactory</span>(<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">VehicleFactory.prototype.vehicleClass = Car;</span><br><span class="line"></span><br><span class="line">VehicleFactory.prototype.createVehicle = <span class="function"><span class="keyword">function</span> (<span class="params">options</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">switch</span>(options.vehicleType) &#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">"car"</span>:</span><br><span class="line">      <span class="keyword">this</span>.vehicleClass = Car;</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">"truck"</span>:</span><br><span class="line">      <span class="keyword">this</span>.vehicleClass = Truck;</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> carFactory = <span class="keyword">new</span> VehicleFactory();</span><br><span class="line"><span class="keyword">var</span> car = carFactory.createVehicle(&#123;</span><br><span class="line">  vehicleType: <span class="string">"car"</span>,</span><br><span class="line">  color: <span class="string">"yellow"</span>,</span><br><span class="line">  doors: <span class="number">6</span> </span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> movingTruck = carFactory.createVehicle(&#123;</span><br><span class="line">  vehicleType: <span class="string">"truck"</span>,</span><br><span class="line">  state: <span class="string">"like new"</span>,</span><br><span class="line">  color: <span class="string">"red"</span>,</span><br><span class="line">  wheelSize: <span class="string">"small"</span> </span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(car <span class="keyword">instanceof</span> Car);</span><br><span class="line"><span class="built_in">console</span>.log( movingTruck <span class="keyword">instanceof</span> Truck );</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(car);</span><br><span class="line"><span class="built_in">console</span>.log(movingTruck);</span><br></pre></td></tr></table></figure>
+<h5 id="何时使用工厂模式"><a href="#何时使用工厂模式" class="headerlink" title="何时使用工厂模式"></a>何时使用工厂模式</h5><ul>
+<li>当我们的对象或组件设计高度复杂性时；</li>
+<li>当我们需要根据我们所处的环境轻松生成不同的对象实例时；</li>
+<li>当我们处理许多共享相同属性的对象或组件时；</li>
+</ul>
+<h3 id="构造函数模式"><a href="#构造函数模式" class="headerlink" title="构造函数模式"></a>构造函数模式</h3><p>​    在JavaScript中，创建对象的方式有一下常见的三种方法：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 字面量</span></span><br><span class="line"><span class="keyword">var</span> newObject = &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Object.create</span></span><br><span class="line"><span class="keyword">var</span> newObject = <span class="built_in">Object</span>.create(<span class="built_in">Object</span>.prototype);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 构造函数</span></span><br><span class="line"><span class="keyword">var</span> newObject = <span class="keyword">new</span> <span class="built_in">Object</span>();</span><br></pre></td></tr></table></figure>
+<p>​    通过<code>Object</code>构造函数创建的对此昂，如果没有穿任何值时，返回的是一个空对象。</p>
+<p>​    然后可以通过四种方法为对象添加属性：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 通过 . 直接设置属性</span></span><br><span class="line">newObject.myKey = <span class="string">"Hello World"</span>;</span><br><span class="line"><span class="keyword">var</span> value = newObject.myKey;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 通过中括号</span></span><br><span class="line">newObject[<span class="string">"myKey"</span>] = <span class="string">"Hello World"</span>;</span><br><span class="line"><span class="keyword">var</span> value = newObject[<span class="string">"myKey"</span>];</span><br><span class="line"></span><br><span class="line"><span class="comment">// Object.defineProperty 方法	</span></span><br><span class="line"><span class="comment">// 具体使用请看 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty</span></span><br><span class="line"><span class="built_in">Object</span>.defineProperty(newObject, <span class="string">"myKey"</span>, &#123;</span><br><span class="line">  value: <span class="string">"Hello World"</span>,</span><br><span class="line">  writable: <span class="literal">true</span>,</span><br><span class="line">  enumerable: <span class="literal">true</span>,</span><br><span class="line">  configurable: <span class="literal">true</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Object.defineProperties 方法</span></span><br><span class="line"><span class="comment">// 具体使用方法请看 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperties</span></span><br><span class="line"><span class="built_in">Object</span>.defineProperties(newOjbect, &#123;</span><br><span class="line">  <span class="string">"myKey1"</span>: &#123;</span><br><span class="line">    value: <span class="string">"Hello World"</span>,</span><br><span class="line">    writable: <span class="literal">false</span></span><br><span class="line">  &#125;,</span><br><span class="line">  </span><br><span class="line">  <span class="string">"myKey2"</span>: &#123;</span><br><span class="line">    value: <span class="string">"Hello JavaScript"</span>,</span><br><span class="line">    writable: <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>​    我们也可以自定义构造函数：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Car</span>(<span class="params">model, year, miles</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.model = model;</span><br><span class="line">  <span class="keyword">this</span>.year = year;</span><br><span class="line">  <span class="keyword">this</span>.miles = miles;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">this</span>.toString = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.model + <span class="string">" has done "</span> + <span class="keyword">this</span>.miles + <span class="string">" miles"</span>;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> civic = <span class="keyword">new</span> Car(<span class="string">"Honda Civic"</span>, <span class="number">2009</span>, <span class="number">20000</span>);</span><br><span class="line"><span class="keyword">var</span> mondeo = <span class="keyword">new</span> Car(<span class="string">"Ford Modeo"</span>, <span class="number">2010</span>, <span class="number">5000</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(civic.toString());</span><br><span class="line"><span class="built_in">console</span>.log(mondeo.toString());</span><br></pre></td></tr></table></figure>
+<p>​    这样我们就实现了简单的构造函数模式版本。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/js/" rel="tag"># js</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/21/Ajax/" rel="next" title="Ajax和跨域">
+                <i class="fa fa-chevron-left"></i> Ajax和跨域
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div id="gitalk-container">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">XXL</p>
+              <p class="site-description motion-element" itemprop="description">分享，记录，感悟</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#观察者模式"><span class="nav-number">1.</span> <span class="nav-text">观察者模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#发布-订阅模式"><span class="nav-number">2.</span> <span class="nav-text">发布/订阅模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#单例模式"><span class="nav-number">3.</span> <span class="nav-text">单例模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#工厂模式"><span class="nav-number">4.</span> <span class="nav-text">工厂模式</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#何时使用工厂模式"><span class="nav-number">4.0.1.</span> <span class="nav-text">何时使用工厂模式</span></a></li></ol></li></ol><li class="nav-item nav-level-3"><a class="nav-link" href="#构造函数模式"><span class="nav-number">5.</span> <span class="nav-text">构造函数模式</span></a></li></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">XXL</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: '5ab625372f9738f97536',
+          clientSecret: '3dd5ae42ff1b72ac9236b8e233da60d004be5533',
+          repo: 'mrpaker.github.io',
+          owner: 'mrpaker',
+          admin: ['mrpaker'],
+          id: '1553784209000', // //location.pathname,
+          distractionFreeMode: 'true'
+        })
+        gitalk.render('gitalk-container')           
+       </script>
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
